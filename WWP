@@ -1,0 +1,237 @@
+import java.util.*;
+public class wumpus2 {
+	static String[][] cave = new String[10][10];
+	static int p,x,b,s,w,g,s1,s2,result;
+	static int arrow=1;
+	static int move=0;
+	static int total=0,o=0;
+	static int y=1,z=1;
+	static Scanner sc= new Scanner(System.in);
+	public static void setup() {
+		
+		System.out.println("Enter Value of x");
+		x=sc.nextInt();
+		for(int i=1;i<=x;i++) {
+			for(int j=1;j<=x;j++)
+			{
+				cave[i][j]="0";
+			}
+		}
+		System.out.println("Enter No. of Pits");
+		p=sc.nextInt();
+		
+		for(int i=1;i<=p;i++) {
+			System.out.println("Enter Pits Row and Col");
+			int row=sc.nextInt();
+			int col=sc.nextInt();
+			for(int j=1;j<=p;j++)
+			{
+				
+				cave[row][col]="pits";
+			}
+		}
+		System.out.println("Enter No. of Breeze");
+		b=sc.nextInt();
+		
+		for(int i=1;i<=b;i++) {
+			System.out.println("Enter Breeze Row and Col");
+			int row=sc.nextInt();
+			int col=sc.nextInt();
+			for(int j=1;j<=b;j++)
+			{
+				
+				cave[row][col]="Breeze";
+			}
+		}
+		System.out.println("Enter No. of Stench");
+		s=sc.nextInt();
+		
+		for(int i=1;i<=s;i++) {
+			System.out.println("Enter Stench Row and Col");
+			int row=sc.nextInt();
+			int col=sc.nextInt();
+			for(int j=1;j<=s;j++)
+			{
+				
+				cave[row][col]="Stench";
+			}
+		}
+		System.out.println("Enter No. of Wumpus");
+		w=sc.nextInt();
+		for(int i=1;i<=w;i++) {
+			System.out.println("Enter Stench Row and Col");
+			int row=sc.nextInt();
+			int col=sc.nextInt();
+			for(int j=1;j<=w;j++)
+			{
+				
+				cave[row][col]="Wumpus";
+			}
+		}
+		System.out.println("Enter No. of Gold");
+		g=sc.nextInt();
+		for(int i=1;i<=g;i++) {
+			System.out.println("Enter Gold Row and Col");
+			int row=sc.nextInt();
+			int col=sc.nextInt();
+			for(int j=1;j<=g;j++)
+			{
+				
+				cave[row][col]="Gold";
+			}
+		}
+	}
+	public static void move() {
+		
+		
+				for(int i=1;i<=x;i++) {
+					for(int j=1;j<=x;j++)
+					{
+						cave[1][1]="Agent";
+					}
+				}
+				System.out.println("You are at ("+y+","+z+")");
+				System.out.println("Enter your Move");
+				s1=sc.nextInt();
+				s2=sc.nextInt();
+				move--;
+				System.out.println("You were at ("+y+","+z+")");
+				
+				if((s1>0&&s2>0)&&(s1==(y+1)&&s2==z)||(s2==(z+1)&&s1==y)||(s2==(z-1)&&s1==y)||(s1==(y-1)&&s2==z)) {
+					y=s1;
+					z=s2;
+					System.out.println("You are at ("+y+","+z+")");
+					if(cave[s1][s2].equals("Breeze")) {
+						System.out.println("You can Feel Breeze");
+					}
+					else if(cave[s1][s2].equals("Stench")) {
+						System.out.println("You can Smell Stench");
+					}
+					else if(cave[s1][s2].equals("pits")) {
+						System.out.println("Your Fell Into Pit !!!  Game Over !!");
+						total=-1000;
+						results();
+						o=4;
+						
+					}
+					else if(cave[s1][s2].equals("Wumpus")) {
+						System.out.println("Your Were Eaten by Wumpus !!!  Game Over !!");
+						total=-1000;
+						results();
+						o=4;
+					}
+					else if(cave[s1][s2].equals("Gold")) {
+						System.out.println("You can See the Glitter");
+						
+					}
+					
+					
+					else {
+						System.out.println("You are safe here");
+					}
+				}
+				else {
+					System.out.println("Invalid Move");
+				}
+				
+				
+	}
+	public static void display() {
+		for(int i=1;i<=x;i++) {
+			for(int j=1;j<=x;j++)
+			{
+				cave[1][1]="Agent";
+				System.out.print(cave[i][j]+" ");
+			}
+			System.out.println();
+		}
+			
+			
+				
+			}
+	public static void results() {
+		result=total+move;
+		System.out.println("Points ="+ result);
+	}
+	
+	public static void main(String args[]){
+		
+		
+		setup();
+		display();
+		
+		
+		while(o!=4) {
+		
+			System.out.println("1. Move");
+			System.out.println("2. Shoot");
+			System.out.println("3. Grab");
+			System.out.println("4. Quit");
+			System.out.println("Enter a choice");
+			int option=sc.nextInt();
+		
+		if(option==1) {
+			move();
+			
+		}
+		
+		
+		else if(option==2)
+		{
+			System.out.println("You shot an arrow");
+			arrow=0;
+			
+			if(cave[s1][s2].equals("Wumpus")) {
+				System.out.println("Congrats You Killed A Wumpus !!!!");
+				move=move-10;
+			}
+			
+			else {
+				System.out.println("There is No Wumpus");
+				
+			}
+		}
+		
+		else if(option==3) {
+			
+			
+			if(cave[s1][s2].equals("Gold")) {
+				System.out.println("You can See the Glitter");
+				System.out.println("Press 'g' to grab");
+				String g = sc.next();
+				if(g.equals("g")) {
+				System.out.println("Congratss ! You grabbed the gold !!");
+				total=1000;
+				results();
+				o=4;
+				}
+				else {
+					System.out.println("Case Sensitive");
+				}
+			}
+			else {
+				System.out.println("There is no gold here");
+			}
+		}
+			
+		else {
+			break;
+		}
+		}
+			
+	}
+}
+
+
+
+	
+	
+
+
+		
+	
+
+
+	
+
+
